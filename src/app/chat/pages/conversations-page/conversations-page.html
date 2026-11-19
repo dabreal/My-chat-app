@@ -1,0 +1,112 @@
+<ion-split-pane contentId="desktop-chat-content" when="xs">
+  <app-conversation-sidebar
+    [conversations]="(conversationsWithAvatars$ | async) ?? []"
+    [selectedConversationId]="(selectedConversationId$ | async) ?? ''"
+    [currentUser]="(currentUser$ | async) ?? null"
+    [openConversationMenuId]="openConversationMenuId"
+    [menuChevronDownIcon]="menuChevronDownIcon"
+    [menuChevronUpIcon]="menuChevronUpIcon"
+    (openConversationClicked)="openConversation($event)"
+    (toggleConversationMenuClicked)="toggleConversationMenu($event)"
+    (deleteConversationClicked)="deleteConversation($event)"
+    (goToProfileClicked)="goToProfile()"
+  />
+
+  <div id="desktop-chat-content" class="chat-desktop-panel">
+    <app-chat-thread-header
+      [selectedConversation]="(selectedConversation$ | async) ?? null"
+      [selectedConversationDetails]="(selectedConversationDetails$ | async) ?? null"
+      [otherUser]="(otherUserProfile$ | async) ?? null"
+      (openConversationInfoModalClicked)="openConversationInfoModal()"
+      (logoutClicked)="logout()"
+    />
+
+    <ion-modal
+      [isOpen]="isConversationInfoModalOpen"
+      (didDismiss)="closeConversationInfoModal()"
+      cssClass="chat-info-modal-shell"
+    >
+      <ng-template>
+        @if (selectedConversation$ | async; as selectedConversation) {
+          <app-chat-info-modal
+            [conversationSummary]="selectedConversation"
+            [conversationDetails]="(selectedConversationDetails$ | async) ?? null"
+            [otherUser]="(otherUserProfile$ | async) ?? null"
+            [members]="(selectedConversationMembers$ | async) ?? []"
+            [currentUserMember]="(currentUserMember$ | async) ?? null"
+            [currentUserId]="(currentUser$ | async)?.uid ?? ''"
+            (close)="closeConversationInfoModal()"
+            (editGroup)="handleEditGroupFromModal()"
+            (addMembers)="handleAddMembersFromModal()"
+            (deleteGroup)="handleDeleteGroupFromModal()"
+            (toggleAdminRole)="handleToggleAdminRoleFromModal($event)"
+            (removeMember)="handleRemoveMemberFromModal($event)"
+          />
+        }
+      </ng-template>
+    </ion-modal>
+
+    <ion-content class="chat-content">
+      @if (currentUser$ | async; as currentUser) {
+        @if (errorMessage) {
+          <div class="chat-error">
+            <ion-text color="danger">
+              <p>{{ errorMessage }}</p>
+            </ion-text>
+          </div>
+        }
+
+        @if (selectedConversation$ | async; as selectedConversation) {
+          <app-chat-message-list
+            [messages]="(messageViewModels | async) ?? []"
+            [currentUserId]="currentUser.uid"
+            [isGroupConversation]="selectedConversation.isGroup"
+            [groupMemberReadStates]="(groupMemberReadStates$ | async) ?? emptyReadStates"
+            
+            [hasMoreMessages]="hasMoreMessages"
+            [sentStatusIcon]="sentStatusIcon"
+            [sendingStatusIcon]="sendingStatusIcon"
+            [menuChevronUpIcon]="menuChevronUpIcon"
+            [menuChevronDownIcon]="menuChevronDownIcon"
+            [locationIcon]="locationIcon"
+            [isOwnMessage]="isOwnMessage.bind(this)"
+            [isPendingMessage]="isPendingMessage.bind(this)"
+            [getMessageStatus]="getMessageStatus.bind(this)"
+            [shouldShowMessageAvatar]="shouldShowMessageAvatar.bind(this)"
+            [isSystemMessage]="isSystemMessage.bind(this)"
+            [isMessageMenuOpen]="isMessageMenuOpen.bind(this)"
+            [trackByMessage]="trackByMessage.bind(this)"
+            (loadOlderMessages)="loadOlderMessages($event)"
+            (toggleMessageMenu)="toggleMessageMenu($event)"
+            (deleteMessage)="deleteMessage($event)"
+          ></app-chat-message-list>
+        } @else {
+          <div class="chat-placeholder">
+            <ion-card>
+              <ion-card-content>
+                <div class="chat-placeholder-icon">
+                  <ion-icon [icon]="emptyChatIcon"></ion-icon>
+                </div>
+                <ion-text color="medium">
+                  <h2>Selecciona una conversación</h2>
+                  <p>Pulsa alguna conversación del panel izquierdo para ver el chat.</p>
+                </ion-text>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        }
+      }
+    </ion-content>
+
+    @if (selectedConversation$ | async; as selectedConversation) {
+      <app-chat-message-composer
+        [selectedConversation]="selectedConversation"
+        [messageInput]="messageInput"
+        [isSending]="isSending"
+        [locationIcon]="locationIcon"
+        (sendLocationClicked)="sendLocationMessage()"
+        (sendMessageClicked)="sendMessage()"
+      ></app-chat-message-composer>
+    }
+  </div>
+</ion-split-pane>

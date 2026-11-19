@@ -1,0 +1,220 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nueva conversación</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/chat']">
+        Volver
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="new-conversation-page">
+    <ion-grid fixed>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="12" sizeLg="10" sizeXl="9">
+          <ion-card class="new-conversation-shell">
+            <ion-card-content>
+              <div class="new-conversation-intro">
+                <div class="new-conversation-intro__icon">
+                  <ion-icon [icon]="emptyIcon"></ion-icon>
+                </div>
+
+                <div>
+                  <h2>Empieza un chat</h2>
+                  <p>
+                    Elige el tipo de conversación y completa el formulario en esta misma pantalla.
+                  </p>
+                </div>
+              </div>
+
+              <ion-grid class="mode-selector-grid">
+                <ion-row>
+                  <ion-col size="12" sizeMd="6">
+                    <button
+                      type="button"
+                      class="mode-selector-card"
+                      [class.mode-selector-card--active]="mode === 'private'"
+                      (click)="setMode('private')"
+                    >
+                      <span class="mode-selector-card__icon">
+                        <ion-icon [icon]="personIcon"></ion-icon>
+                      </span>
+
+                      <span class="mode-selector-card__copy">
+                        <strong>Conversación 1 a 1</strong>
+                        <span>Selecciona una persona y abre un chat directo.</span>
+                      </span>
+                    </button>
+                  </ion-col>
+
+                  <ion-col size="12" sizeMd="6">
+                    <button
+                      type="button"
+                      class="mode-selector-card"
+                      [class.mode-selector-card--active]="mode === 'group'"
+                      (click)="setMode('group')"
+                    >
+                      <span class="mode-selector-card__icon">
+                        <ion-icon [icon]="groupIcon"></ion-icon>
+                      </span>
+
+                      <span class="mode-selector-card__copy">
+                        <strong>Nuevo grupo</strong>
+                        <span>Asigna un nombre, descripción y miembros al grupo.</span>
+                      </span>
+                    </button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+
+              @if (errorMessage) {
+                <div class="form-error">
+                  <ion-text color="danger">
+                    <p>{{ errorMessage }}</p>
+                  </ion-text>
+                </div>
+              }
+
+              @if (mode === 'private') {
+                <div class="mode-panel">
+                  <div class="mode-panel__header">
+                    <h3>Conversación individual</h3>
+                    <p>Selecciona una persona para abrir un chat directo.</p>
+                  </div>
+
+                  @if (users$ | async; as users) {
+                    @if (users.length === 0) {
+                      <div class="empty-state">
+                        <ion-text color="medium">
+                          <p>No hay usuarios disponibles.</p>
+                        </ion-text>
+                      </div>
+                    } @else {
+                      <ion-radio-group
+                        [value]="selectedUserId"
+                        (ionChange)="onPrivateUserChange($event)"
+                      >
+                        <ion-list>
+                          @for (user of users; track user.uid) {
+                            <ion-item button detail="false">
+                              <ion-label>
+                                <h3>{{ user.displayName }}</h3>
+                                @if (user.email) {
+                                  <p>{{ user.email }}</p>
+                                }
+                              </ion-label>
+
+                              <ion-radio slot="end" [value]="user.uid"></ion-radio>
+                            </ion-item>
+                          }
+                        </ion-list>
+                      </ion-radio-group>
+
+                      <div class="actions-row">
+                        <ion-button
+                          expand="block"
+                          (click)="createConversation()"
+                          [disabled]="isCreating || !selectedUserId"
+                        >
+                          Crear conversación
+                        </ion-button>
+                      </div>
+                    }
+                  }
+                </div>
+              }
+
+              @if (mode === 'group') {
+                <div class="mode-panel">
+                  <div class="mode-panel__header">
+                    <h3>Nuevo grupo</h3>
+                    <p>
+                      Define el nombre del grupo y selecciona los miembros que quieres añadir.
+                    </p>
+                  </div>
+
+                  <form [formGroup]="groupForm" class="group-form">
+                    <ion-grid>
+                      <ion-row>
+                        <ion-col size="12" sizeMd="6">
+                          <ion-item>
+                            <ion-input
+                              label="Nombre del grupo"
+                              labelPlacement="stacked"
+                              placeholder="Ej. Proyecto DAW"
+                              formControlName="title"
+                            ></ion-input>
+                          </ion-item>
+                        </ion-col>
+
+                        <ion-col size="12" sizeMd="6">
+                          <ion-item>
+                            <ion-input
+                              label="Descripción"
+                              labelPlacement="stacked"
+                              placeholder="Opcional"
+                              formControlName="description"
+                            ></ion-input>
+                          </ion-item>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </form>
+
+                  <div class="group-members-panel">
+                    <div class="group-members-panel__header">
+                      <h4>Miembros</h4>
+                      <span>{{ selectedGroupMemberIds.length }} seleccionados</span>
+                    </div>
+
+                    @if (users$ | async; as users) {
+                      @if (users.length === 0) {
+                        <div class="empty-state">
+                          <ion-text color="medium">
+                            <p>No hay usuarios disponibles para añadir al grupo.</p>
+                          </ion-text>
+                        </div>
+                      } @else {
+                        <ion-list>
+                          @for (user of users; track user.uid) {
+                            <ion-item>
+                              <ion-checkbox
+                                slot="start"
+                                [checked]="isMemberSelected(user.uid)"
+                                (ionChange)="onGroupMemberChange($event, user.uid)"
+                              ></ion-checkbox>
+
+                              <ion-label>
+                                <h3>{{ user.displayName }}</h3>
+                                @if (user.email) {
+                                  <p>{{ user.email }}</p>
+                                }
+                              </ion-label>
+                            </ion-item>
+                          }
+                        </ion-list>
+                      }
+                    }
+                  </div>
+
+                  <div class="actions-row">
+                    <ion-button
+                      expand="block"
+                      (click)="createGroup()"
+                      [disabled]="isCreating"
+                    >
+                      Crear grupo
+                    </ion-button>
+                  </div>
+                </div>
+              }
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

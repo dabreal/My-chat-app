@@ -1,0 +1,234 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+/* CONTENEDOR GENERAL */
+.chat-info-modal {
+  --padding-top: 24px;
+  --padding-bottom: 32px;
+  --padding-start: 20px;
+  --padding-end: 20px;
+
+  --background: var(--ion-color-light);
+
+  height: 100%;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.chat-info-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.chat-info-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+
+  background: rgba(var(--ion-color-primary-rgb), 0.12);
+  color: var(--ion-color-primary);
+
+  font-weight: 700;
+  font-size: 1.4rem;
+
+  display: grid;
+  place-items: center;
+
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.chat-info-avatar--group {
+  background: rgba(var(--ion-color-tertiary-rgb), 0.14);
+  color: var(--ion-color-tertiary);
+}
+
+.chat-info-hero__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.chat-info-hero__copy h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.chat-info-hero__copy p {
+  margin: 0;
+  max-width: 260px;
+  font-size: 0.9rem;
+  color: var(--ion-color-medium);
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.chat-info-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 8px 0 20px;
+}
+
+.chat-info-actions ion-button {
+  --border-radius: 10px;
+  font-size: 0.75rem;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+ion-card {
+  margin: 0 auto 18px;
+  border-radius: 18px;
+  max-width: 520px; /* ✅ CONTROLA ANCHO */
+  width: 100%;
+
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+}
+
+ion-card-content {
+  padding: 18px;
+}
+
+/* =========================
+   GRID INFO (MEJORADO ✅)
+========================= */
+
+.chat-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  gap: 14px;
+
+  max-width: 420px;        /* ✅ evita que se estire */
+  margin: 0 auto;          /* ✅ centrado horizontal */
+}
+
+.chat-info-grid--direct {
+  grid-template-columns: 1fr;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.chat-info-grid div {
+  background: rgba(0, 0, 0, 0.025);
+  padding: 12px 14px;
+  border-radius: 12px;
+
+  text-align: center;      /* ✅ textos centrados */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-info-grid span {
+  display: block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--ion-color-medium);
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+
+.chat-info-grid strong {
+  font-size: 0.95rem;
+}
+
+/* =========================
+   SECCIONES
+========================= */
+
+.chat-info-section-title {
+  margin: 0 0 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center; /* ✅ más limpio */
+}
+
+/* =========================
+   MIEMBROS
+========================= */
+
+ion-list {
+  background: transparent;
+}
+
+ion-item {
+  --background: transparent;
+  --inner-padding-end: 0;
+}
+
+.chat-info-member-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.chat-info-member-avatar {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+
+  border-radius: 50%;
+  background: rgba(var(--ion-color-primary-rgb), 0.12);
+  color: var(--ion-color-primary);
+
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.chat-info-member-row__meta {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.chat-info-member-row__actions {
+  display: flex;
+  gap: 6px;
+}
+
+.chat-info-member-row__actions ion-button {
+  font-size: 0.7rem;
+  height: 28px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 767px) {
+  .chat-info-grid {
+    grid-template-columns: 1fr;
+    max-width: 300px; /* ✅ aún más centrado en móvil */
+  }
+
+  .chat-info-member-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .chat-info-member-row__meta {
+    align-items: flex-start;
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  height: 100%;
+  min-height: 0;
+}
+
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 8px 24px;
+  background: transparent;
+  margin: 0;
+}
+
+.chat-empty-state {
+  padding: 16px;
+}
+
+.chat-empty-state ion-card {
+  border-radius: 18px;
+}
+
+@media (max-width: 991px) {
+  .messages-list {
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-bottom: 20px;
+  }
+}

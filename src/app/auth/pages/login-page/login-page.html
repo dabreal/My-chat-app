@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Acceso</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-segment [formControl]="mode">
+    <ion-segment-button value="login">
+      Iniciar sesión
+    </ion-segment-button>
+
+    <ion-segment-button value="register">
+      Registrarse
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-item>
+    <ion-label position="stacked">Email</ion-label>
+    <ion-input
+      [formControl]="emailInput"
+      type="email"
+      placeholder="correo@ejemplo.com"
+    />
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Contraseña</ion-label>
+    <ion-input
+      [formControl]="passwordInput"
+      type="password"
+      placeholder="Mínimo 6 caracteres"
+    />
+  </ion-item>
+
+  @if (mode.value === 'register') {
+    <ion-item>
+      <ion-label position="stacked">Username</ion-label>
+      <ion-input
+        [formControl]="usernameInput"
+        placeholder="Tu nombre de usuario"
+      />
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Nombre visible</ion-label>
+      <ion-input
+        [formControl]="displayNameInput"
+        placeholder="Cómo te verá el resto"
+      />
+    </ion-item>
+  }
+
+  @if (errorMessage) {
+    <ion-text color="danger">
+      <p>{{ errorMessage }}</p>
+    </ion-text>
+  }
+
+  <ion-button
+    expand="block"
+    (click)="submit()"
+    [disabled]="isSubmitting"
+  >
+    {{ mode.value === 'login' ? 'Entrar' : 'Crear cuenta' }}
+  </ion-button>
+
+  <ion-button
+    expand="block"
+    fill="outline"
+    (click)="loginWithGoogle()"
+    [disabled]="isSubmitting"
+  >
+    Continuar con Google
+  </ion-button>
+</ion-content>

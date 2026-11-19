@@ -1,0 +1,259 @@
+:host {
+  display: block;
+}
+
+.message-row {
+  --background: transparent;
+  --inner-padding-end: 0;
+  --inner-padding-start: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+  --min-height: auto;
+  margin-bottom: 8px;
+}
+
+.message-row::part(native) {
+  background: transparent;
+  padding-inline-start: 0;
+  padding-inline-end: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  ;
+  gap: 10px;
+}
+
+.message-row--own {
+  justify-content: flex-end;
+}
+
+.message-row--other {
+  justify-content: flex-start;
+}
+
+.message-row--own::part(native) {
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+
+.message-row--other::part(native) {
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
+.message-row--system {
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.message-row--system::part(native) {
+  justify-content: center;
+}
+
+.message-row--system ion-text {
+  display: inline-block;
+  padding: 8px 12px;
+  background: #e9edf3;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: #5b6472;
+}
+
+.message-avatar {
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  align-self: center;
+  border-radius: 10px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+}
+
+.message-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.message-avatar--placeholder {
+  visibility: hidden;
+}
+
+.message-bubble {
+  width: fit-content;
+  max-width: min(70%, 720px);
+  margin: 0;
+  border-radius: 16px;
+  box-shadow: none;
+  position: relative;
+  overflow: visible;
+}
+
+.message-bubble--compact ion-card-content {
+  padding-top: 8px;
+}
+
+.message-bubble ion-card-content {
+  padding: 10px 12px 8px;
+}
+
+.message-bubble--own {
+  background: #dff7c8;
+  color: #1f1f1f;
+}
+
+.message-bubble--other {
+  background: #ffffff;
+  color: #1f1f1f;
+  border: 1px solid #e2e2e2;
+}
+
+.message-actions-menu {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 3;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  overflow: visible;
+}
+
+.item-menu-trigger {
+  --padding-start: 4px;
+  --padding-end: 4px;
+  min-height: 24px;
+  height: 24px;
+  margin: 0;
+}
+
+.item-menu-trigger ion-icon {
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+.item-menu-dropdown {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  min-width: 96px;
+  padding: 2px;
+}
+
+.item-menu-dropdown ion-button {
+  margin: 0;
+}
+
+.message-meta {
+  font-size: 0.82rem;
+  margin-bottom: 6px;
+  padding-right: 18px;
+  color: #4f4f4f;
+}
+
+.message-meta strong {
+  font-weight: 700;
+}
+
+.message-text {
+  font-size: 0.98rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.message-date {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  text-align: right;
+  color: #6b6b6b;
+}
+
+.message-status {
+  margin-top: 4px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 16px;
+}
+
+.message-status-icon {
+  font-size: 0.9rem;
+}
+
+.message-status-icon--sending {
+  color: #7b8794;
+}
+
+.message-status-checks {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  line-height: 1;
+}
+
+.message-status-checks ion-icon {
+  font-size: 0.9rem;
+  margin-left: -3px;
+}
+
+.message-status-checks ion-icon:first-child {
+  margin-left: 0;
+}
+
+.message-status-checks--sent ion-icon {
+  color: #7b8794;
+}
+
+.message-status-checks--read ion-icon {
+  color: #1d9bf0;
+}
+
+@media (max-width: 991px) {
+  .message-bubble {
+    max-width: 82%;
+  }
+}
+
+@media (max-width: 575px) {
+  .message-avatar {
+    flex-basis: 26px;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+  }
+
+  .message-bubble {
+    max-width: 86%;
+    border-radius: 14px;
+  }
+
+  .message-bubble ion-card-content {
+    padding: 9px 10px 7px;
+  }
+
+  .message-bubble--compact ion-card-content {
+    padding-top: 8px;
+  }
+
+  .message-text {
+    font-size: 0.95rem;
+  }
+}

@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <button
+      type="button"
+      class="chat-desktop-header__title"
+      (click)="openConversationInfoModal()"
+      [disabled]="selectedConversation === null"
+    >
+      @if (selectedConversation) {
+        <div class="chat-desktop-header__avatar">
+          @if (selectedConversation.isGroup) {
+            @if (selectedConversationDetails?.photoURL) {
+              <img
+                [src]="selectedConversationDetails?.photoURL"
+                [alt]="selectedConversation.title"
+              />
+            } @else {
+              <span>
+                {{ getUserInitials(selectedConversation.title || 'G') }}
+              </span>
+            }
+          } @else {
+            @if (otherUser?.photoURL) {
+              <img
+                [src]="otherUser?.photoURL"
+                [alt]="otherUser?.displayName || 'Usuario'"
+              />
+            } @else {
+              <span>
+                {{
+                  getUserInitials(
+                    otherUser?.displayName ||
+                    selectedConversation.otherUserName ||
+                    'U'
+                  )
+                }}
+              </span>
+            }
+          }
+        </div>
+
+        <ion-title>
+          {{ selectedConversation.title || selectedConversation.otherUserName || 'Chat' }}
+        </ion-title>
+      } @else {
+        <ion-title>Chat</ion-title>
+      }
+    </button>
+
+    <ion-buttons slot="end">
+      @if (selectedConversation !== null) {
+        <ion-button fill="clear" (click)="openConversationInfoModal()">
+          Información
+        </ion-button>
+      }
+      <ion-button (click)="logout()">Cerrar sesión</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>

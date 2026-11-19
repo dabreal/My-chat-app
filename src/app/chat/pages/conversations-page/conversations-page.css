@@ -1,0 +1,93 @@
+:host {
+  display: block;
+  height: 100dvh;
+}
+
+ion-split-pane {
+  --side-width: 340px;
+  --side-max-width: 340px;
+  --border: 1px solid #dcdfe4;
+  height: 100%;
+}
+
+.chat-desktop-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: #f4f5f8;
+}
+
+.chat-content {
+  --background: #f4f5f8;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.chat-content::part(scroll) {
+  padding-bottom: 12px;
+}
+
+.sidebar-empty-state,
+.chat-placeholder,
+.chat-empty-state,
+.chat-error {
+  padding: 16px;
+}
+
+.chat-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+}
+
+.chat-placeholder ion-card {
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.chat-placeholder-icon,
+.chat-placeholder__icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.chat-placeholder-icon ion-icon,
+.chat-placeholder__icon ion-icon {
+  font-size: 64px;
+  color: #6b7280;
+}
+
+.chat-empty-state ion-card,
+.chat-error ion-card {
+  border-radius: 18px;
+}
+
+.chat-error ion-text p,
+.sidebar-empty-state ion-text p,
+.chat-empty-state ion-text p {
+  margin: 0;
+}
+
+ion-badge {
+  font-weight: 700;
+}
+
+@media (max-width: 991px) {
+  :host,
+  ion-split-pane,
+  .chat-desktop-panel {
+    height: 100dvh;
+  }
+}
+
+@media (max-width: 575px) {
+  .chat-placeholder {
+    padding: 12px;
+  }
+}

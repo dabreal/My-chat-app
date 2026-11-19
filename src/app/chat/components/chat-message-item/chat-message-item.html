@@ -1,0 +1,116 @@
+@if (isSystem) {
+  <ion-item
+    [id]="'msg-' + message.id"
+    lines="none"
+    class="message-row message-row--system"
+  >
+    <ion-text color="medium">
+      <p>{{ message.text }}</p>
+    </ion-text>
+  </ion-item>
+} @else {
+  <ion-item
+    [id]="'msg-' + message.id"
+    lines="none"
+    class="message-row"
+    [class.message-row--own]="isOwn"
+    [class.message-row--other]="!isOwn"
+  >
+    @if (showAvatar) {
+      <div class="message-avatar">
+        @if (message.senderPhotoURL) {
+          <img
+            [src]="message.senderPhotoURL"
+            [alt]="message.senderDisplayName"
+          />
+        } @else {
+          <span>{{ message.senderInitials }}</span>
+        }
+      </div>
+    } @else {
+      <div
+        class="message-avatar message-avatar--placeholder"
+        aria-hidden="true"
+      ></div>
+    }
+
+    <ion-card
+      class="message-bubble"
+      [class.message-bubble--own]="isOwn"
+      [class.message-bubble--other]="!isOwn"
+      [class.message-bubble--compact]="!showSenderName"
+    >
+      <ion-card-content>
+        @if (isOwn && message.id) {
+          <div class="message-actions-menu">
+            <ion-button
+              size="small"
+              fill="clear"
+              class="item-menu-trigger"
+              (click)="onToggleMenu()"
+            >
+              <ion-icon
+                slot="icon-only"
+                [icon]="isMenuOpen ? menuChevronUpIcon : menuChevronDownIcon"
+              ></ion-icon>
+            </ion-button>
+
+            @if (isMenuOpen) {
+              <div class="item-menu-dropdown">
+                <ion-button
+                  size="small"
+                  fill="clear"
+                  color="danger"
+                  (click)="onDeleteMessage()"
+                >
+                  Eliminar
+                </ion-button>
+              </div>
+            }
+          </div>
+        }
+
+        @if (showSenderName) {
+          <div class="message-meta">
+            <strong>{{ message.senderDisplayName }}</strong>
+          </div>
+        }
+
+        <div class="message-text">
+          {{ message.text }}
+        </div>
+
+        <div class="message-date">
+          {{ message.createdAt | date:'short' }}
+        </div>
+
+        @if (isOwn) {
+          <div class="message-status">
+            @if (isPending) {
+              <ion-icon
+                class="message-status-icon message-status-icon--sending"
+                [icon]="sendingStatusIcon"
+              ></ion-icon>
+            } @else if (status === 'read') {
+              <div
+                class="message-status-checks message-status-checks--read"
+                aria-label="Leído"
+              >
+                <ion-icon [icon]="sentStatusIcon"></ion-icon>
+                <ion-icon [icon]="sentStatusIcon"></ion-icon>
+              </div>
+            } @else {
+              <div
+                class="message-status-checks message-status-checks--sent"
+                aria-label="Enviado"
+              >
+                <ion-icon [icon]="sentStatusIcon"></ion-icon>
+                <ion-icon [icon]="sentStatusIcon"></ion-icon>
+              </div>
+            }
+          </div>
+        }
+      </ion-card-content>
+    </ion-card>
+  </ion-item>
+}

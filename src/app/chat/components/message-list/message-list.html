@@ -1,0 +1,45 @@
+<ion-infinite-scroll
+  position="top"
+  threshold="120px"
+  [disabled]="!hasMoreMessages"
+  (ionInfinite)="onLoadOlderMessages($event)"
+>
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Cargando mensajes anteriores..."
+  />
+</ion-infinite-scroll>
+
+@if (messages.length === 0) {
+  <div class="chat-empty-state">
+    <ion-card>
+      <ion-card-content>
+        <ion-text color="medium">
+          <p>Todavía no hay mensajes. Sé el primero en escribir.</p>
+        </ion-text>
+      </ion-card-content>
+    </ion-card>
+  </div>
+} @else {
+  <ion-list class="messages-list">
+    @for (message of messages; track trackByMessage($index, message); let index = $index) {
+      <app-chat-message-item
+        [message]="message"
+        [currentUserId]="currentUserId"
+        [showAvatar]="shouldShowMessageAvatar(messages, index)"
+        [showSenderName]="shouldShowSenderName(messages, index)"
+        [isOwn]="isOwnMessage(message, currentUserId)"
+        [isPending]="isPendingMessage(message, currentUserId)"
+        [status]="resolveStatus(message)"
+        [isSystem]="isSystemMessage(message)"
+        [isMenuOpen]="!!message.id && isMessageMenuOpen(message.id)"
+        [sentStatusIcon]="sentStatusIcon"
+        [sendingStatusIcon]="sendingStatusIcon"
+        [menuChevronUpIcon]="menuChevronUpIcon"
+        [menuChevronDownIcon]="menuChevronDownIcon"
+        (toggleMenu)="onToggleMessageMenu($event)"
+        (deleteMessageClicked)="onDeleteMessage($event)"
+      ></app-chat-message-item>
+    }
+  </ion-list>
+}

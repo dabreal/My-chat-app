@@ -1,0 +1,134 @@
+<div class="chat-sidebar">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Conversaciones</ion-title>
+      <ion-buttons slot="end">
+        <ion-button routerLink="/chat/new">Nueva</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="chat-sidebar__content">
+    @if (conversations.length === 0) {
+      <div class="sidebar-empty-state">
+        <ion-text color="medium">
+          <p>No tienes conversaciones todavía.</p>
+        </ion-text>
+      </div>
+    } @else {
+      <ion-list class="conversation-list">
+        @for (conversation of conversations; track trackByConversation($index, conversation)) {
+          <ion-item
+            button
+            detail="false"
+            class="conversation-item"
+            [class.conversation-item--active]="
+              isSelectedConversation(conversation.conversationId, selectedConversationId)
+            "
+            (click)="openConversation(conversation.conversationId)"
+          >
+            <div class="conversation-avatar">
+              @if (conversation.avatarURL) {
+                <img
+                  [src]="conversation.avatarURL"
+                  [alt]="conversation.title || conversation.otherUserName"
+                />
+              } @else {
+                <span>{{ conversation.avatarInitials }}</span>
+              }
+            </div>
+
+            <ion-label>
+              <h2 class="conversation-name">
+                @if (conversation.isGroup) {
+                  <ion-icon [icon]="groupIcon"></ion-icon>
+                }
+                {{ conversation.title || conversation.otherUserName || 'Conversación' }}
+              </h2>
+
+              <p class="conversation-last-message">
+                {{ conversation.lastMessage || 'Todavía no hay mensajes' }}
+              </p>
+
+              <p class="conversation-date">
+                @if (conversation.lastMessageAt) {
+                  {{ conversation.lastMessageAt | date:'short' }}
+                }
+              </p>
+            </ion-label>
+
+            @if (conversation.unreadCount > 0) {
+              <ion-badge color="primary">
+                {{ conversation.unreadCount }}
+              </ion-badge>
+            }
+
+            <div class="conversation-actions" (click)="$event.stopPropagation()">
+              <ion-button
+                size="small"
+                fill="clear"
+                class="item-menu-trigger"
+                (click)="toggleConversationMenu(conversation.conversationId)"
+              >
+                <ion-icon
+                  slot="icon-only"
+                  [icon]="
+                    isConversationMenuOpen(conversation.conversationId)
+                      ? menuChevronUpIcon
+                      : menuChevronDownIcon
+                  "
+                ></ion-icon>
+              </ion-button>
+
+              @if (isConversationMenuOpen(conversation.conversationId)) {
+                <div class="item-menu-dropdown">
+                  <ion-button
+                    size="small"
+                    fill="clear"
+                    color="danger"
+                    (click)="deleteConversation(conversation)"
+                  >
+                    Eliminar
+                  </ion-button>
+                </div>
+              }
+            </div>
+          </ion-item>
+        }
+      </ion-list>
+    }
+  </ion-content>
+
+  <div class="chat-sidebar__profile">
+    @if (currentUser; as user) {
+      <div class="sidebar-profile-card">
+        <div class="sidebar-profile-card__avatar">
+          @if (user.photoURL) {
+            <img
+              [src]="user.photoURL"
+              [alt]="user.displayName || user.email || 'Perfil'"
+            />
+          } @else {
+            <span>
+              {{ getUserInitials(user.displayName || user.email || 'Usuario') }}
+            </span>
+          }
+        </div>
+
+        <div class="sidebar-profile-card__content">
+          <span class="sidebar-profile-card__label">Tu perfil</span>
+          <strong class="sidebar-profile-card__name">
+            {{ user.displayName || 'Usuario' }}
+          </strong>
+          <span class="sidebar-profile-card__email">
+            {{ user.email }}
+          </span>
+        </div>
+
+        <ion-button type="button" (click)="goToProfile()">
+          Ver perfil
+        </ion-button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,86 @@
+# ---------------------------------------------------------------
+# Secretos y configuración local (NUNCA subir)
+# ---------------------------------------------------------------
+/src/environments/environment.ts
+/src/environments/environment.prod.ts
+/src/environments/environment.*.ts
+!/src/environments/*.example.ts
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*serviceAccount*.json
+*service-account*.json
+*-firebase-adminsdk-*.json
+.runtimeconfig.json
+
+# Firebase
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+database-debug.log
+ui-debug.log
+*-debug.log
+
+# Volcados / exportaciones de datos
+*.dump
+*-export.json
+/exports/
+
+# ---------------------------------------------------------------
+# Dependencias, compilación y cachés
+# ---------------------------------------------------------------
+/node_modules
+/dist
+/www
+/tmp
+/out-tsc
+/bazel-out
+/coverage
+/.angular
+/.nx
+/.sass-cache
+/.sourcemaps
+/.versions
+/typings
+/.ionic
+/platforms
+/plugins
+*.tmp
+*.tmp.*
+.tmp
+
+# Logs
+*.log
+log.txt
+npm-debug.log*
+yarn-error.log*
+testem.log
+/libpeerconnection.log
+/connect.lock
+
+# ---------------------------------------------------------------
+# Editores y sistema
+# ---------------------------------------------------------------
+.vscode/
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-project
+*.sublime-workspace
+.history/
+*~
+*.sw[mnpcod]
+UserInterfaceState.xcuserstate
+.DS_Store
+Thumbs.db
+$RECYCLE.BIN/
+
+# Herramientas de agentes de IA locales
+.agents/
+skills-lock.json

@@ -1,0 +1,184 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="close.emit()">
+        Cerrar
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="chat-info-modal ion-padding">
+  @if (isGroupConversation) {
+    <div class="chat-info-hero">
+      <ion-avatar class="chat-info-avatar chat-info-avatar--group">
+        @if (avatarUrl) {
+          <img [src]="avatarUrl" [alt]="displayName" />
+        } @else {
+          <span>{{ getInitials(displayName) }}</span>
+        }
+      </ion-avatar>
+
+      <div class="chat-info-hero__copy">
+        <ion-chip color="primary">Grupo</ion-chip>
+        <h2>{{ conversationDetails?.title || conversationSummary?.title || 'Grupo' }}</h2>
+        <p>
+          {{ conversationDetails?.description || conversationSummary?.subtitle || 'Sin descripción' }}
+        </p>
+      </div>
+    </div>
+
+    <ion-card>
+      <ion-card-content>
+        @if (canManageGroupView) {
+          <div class="chat-info-actions">
+            <ion-button size="small" fill="outline" (click)="editGroup.emit()">
+              Editar
+            </ion-button>
+
+            <ion-button size="small" fill="outline" (click)="addMembers.emit()">
+              Añadir
+            </ion-button>
+
+            @if (currentUserMember?.role === 'owner') {
+              <ion-button size="small" fill="outline" color="danger" (click)="deleteGroup.emit()">
+                Eliminar grupo
+              </ion-button>
+            }
+          </div>
+        }
+
+        <div class="chat-info-grid">
+          <div>
+            <span>Miembros</span>
+            <strong>{{ groupMembers.length }}</strong>
+          </div>
+
+          <div>
+            <span>Creado por</span>
+            <strong>
+              {{ conversationDetails?.memberNames?.[conversationDetails?.createdBy || ''] || 'Usuario' }}
+            </strong>
+          </div>
+
+          <div>
+            <span>Creado el</span>
+            <strong>
+              @if (conversationDetails; as details) {
+                {{ details.createdAt | date:'short' }}
+              } @else {
+                Desconocido
+              }
+            </strong>
+          </div>
+
+          <div>
+            <span>Tu rol</span>
+            <strong>
+              {{ currentUserMember ? getMemberRoleLabel(currentUserMember.role) : 'Miembro' }}
+            </strong>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-content>
+        <h3 class="chat-info-section-title">Miembros del grupo</h3>
+
+        <ion-list>
+          @for (member of groupMembers; track member.uid) {
+            <ion-item lines="full">
+              <div class="chat-info-member-row">
+                <ion-avatar slot="start">
+                  <span class="chat-info-member-avatar">
+                    {{ getInitials(member.displayName) }}
+                  </span>
+                </ion-avatar>
+
+                <ion-label>
+                  <h3>{{ member.displayName }}</h3>
+                  <p>
+                    {{ member.joinedAt ? (member.joinedAt | date:'short') : 'Fecha no disponible' }}
+                  </p>
+                </ion-label>
+
+                <div class="chat-info-member-row__meta">
+                  <ion-badge [color]="getMemberRoleColor(member.role)">
+                    {{ getMemberRoleLabel(member.role) }}
+                  </ion-badge>
+
+                  @if (canManageGroupView && member.uid !== currentUserId) {
+                    <div class="chat-info-member-row__actions">
+                      @if (canEditRolesView && member.role !== 'owner') {
+                        <ion-button size="small" fill="clear" (click)="toggleAdminRole.emit(member)">
+                          @if (member.role === 'admin') {
+                            Quitar admin
+                          } @else {
+                            Hacer admin
+                          }
+                        </ion-button>
+                      }
+
+                      @if (member.role !== 'owner') {
+                        <ion-button size="small" fill="clear" color="danger" (click)="removeMember.emit(member)">
+                          Quitar
+                        </ion-button>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            </ion-item>
+          }
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  } @else {
+    <div class="chat-info-hero chat-info-hero--direct">
+      <ion-avatar class="chat-info-avatar">
+        @if (avatarUrl) {
+          <img [src]="avatarUrl" [alt]="displayName" />
+        } @else {
+          <span>{{ getInitials(displayName) }}</span>
+        }
+      </ion-avatar>
+
+      <div class="chat-info-hero__copy">
+        <ion-chip color="success">Conversación 1 a 1</ion-chip>
+        <h2>{{ displayName }}</h2>
+        <p>
+          {{ otherUser?.username || conversationSummary?.otherUserName || 'Usuario' }}
+        </p>
+      </div>
+    </div>
+
+    <ion-card>
+      <ion-card-content>
+        <div class="chat-info-grid chat-info-grid--direct">
+          <div>
+            <span>Email</span>
+            <strong>{{ otherUser?.email || 'No disponible' }}</strong>
+          </div>
+
+          <div>
+            <span>Nombre visible</span>
+            <strong>
+              {{ otherUser?.displayName || conversationSummary?.otherUserName || 'Usuario' }}
+            </strong>
+          </div>
+
+          <div>
+            <span>Nombre de usuario</span>
+            <strong>{{ otherUser?.username || 'Sin usuario' }}</strong>
+          </div>
+
+          <div>
+            <span>Bio</span>
+            <strong>{{ otherUser?.bio || 'Sin bio' }}</strong>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  }
+</ion-content>

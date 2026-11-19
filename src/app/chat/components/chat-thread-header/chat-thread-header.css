@@ -1,0 +1,69 @@
+:host {
+  display: block;
+  flex: 0 0 auto;
+}
+
+ion-header {
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.chat-desktop-header__title {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0 0 0 15px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.chat-desktop-header__title:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.chat-desktop-header__title ion-title {
+  padding-inline-start: 0;
+  text-align: left;
+}
+
+.chat-desktop-header__avatar {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.chat-desktop-header__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 991px) {
+  .chat-desktop-header__title ion-title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .chat-desktop-header__avatar {
+    width: 34px;
+    height: 34px;
+    margin-right: 10px;
+  }
+}
