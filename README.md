@@ -1,6 +1,6 @@
 <div align="center">
 
-# 💬 my-chat
+# 💬 My-chat
 
 **Aplicación de chat en tiempo real** con conversaciones individuales y de grupo, construida con Angular, Ionic y Firebase.
 
